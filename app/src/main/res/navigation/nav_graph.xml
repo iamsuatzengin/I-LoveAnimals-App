@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/adListFragment">
+
+    <fragment
+        android:id="@+id/mapsActivity"
+        android:name="com.suatzengin.i_love_animals.presentation.post_ad.MapsFragment"
+        android:label="activity_maps"
+        tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/adListFragment"
+        android:name="com.suatzengin.i_love_animals.presentation.ad_list.AdListFragment"
+        android:label="fragment_ad_list"
+        tools:layout="@layout/fragment_ad_list" >
+        <action
+            android:id="@+id/fromAdListToMaps"
+            app:destination="@id/mapsActivity" />
+    </fragment>
+</navigation>

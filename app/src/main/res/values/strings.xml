@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">I-Love-Animals</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="post_ad_label">Post New Ad</string>
+
+
+    <string name="title_label">Title</string>
+    <string name="address_label">Address</string>
+    <string name="description_label">Description</string>
+    <string name="post_label">Post</string>
+    <string name="phone_number_label">Phone Number</string>
+    <string name="share_location_btn_label">Share Your Location</string>
+
+</resources>
