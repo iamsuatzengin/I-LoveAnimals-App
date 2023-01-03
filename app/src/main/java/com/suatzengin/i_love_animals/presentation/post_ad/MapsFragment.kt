@@ -43,7 +43,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private val defaultLocation = LatLng(-34.0, 151.0)
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

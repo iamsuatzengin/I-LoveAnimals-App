@@ -2,13 +2,28 @@
     <string name="app_name">I-Love-Animals</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="post_ad_label">Post New Ad</string>
-
-
     <string name="title_label">Title</string>
     <string name="address_label">Address</string>
     <string name="description_label">Description</string>
     <string name="post_label">Post</string>
     <string name="phone_number_label">Phone Number</string>
     <string name="share_location_btn_label">Share Your Location</string>
+    <string name="password_label">Password</string>
+    <string name="email_label">Email</string>
+    <string name="sign_up_label">Sign Up</string>
+    <string name="or_label">OR</string>
+    <string name="forgot_password_label">
+        <u>Forgot Password?</u>
+    </string>
+    <string name="login_label">Login</string>
+    <string name="sign_in_label">Sign In</string>
+    <string name="icon_for_dog_label">Icon for Dog</string>
+    <string name="have_an_account_label">Already have an account?</string>
+    <string name="create_an_account_label">Create an account!</string>
+    <string name="first_name_label">First Name</string>
+    <string name="last_name_label">Last Name</string>
+    <string name="do_you_have_already_an_account">
+        <u>Do you have already an account?</u>
+    </string>
 
 </resources>
