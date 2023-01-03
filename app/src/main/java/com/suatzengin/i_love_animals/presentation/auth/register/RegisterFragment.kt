@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.suatzengin.i_love_animals.R
 import com.suatzengin.i_love_animals.databinding.FragmentRegisterBinding
+import com.suatzengin.i_love_animals.presentation.auth.AuthViewModel
 import com.suatzengin.i_love_animals.util.UiEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
-    private val viewModel: RegisterViewModel by viewModels()
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +57,7 @@ class RegisterFragment : Fragment() {
                 }
             }
             launch {
-                viewModel.state.collect { state ->
+                viewModel.stateRegister.collect { state ->
                     if (state.isLoading) binding.progressLinear.visibility = View.VISIBLE
                     else binding.progressLinear.visibility = View.INVISIBLE
 

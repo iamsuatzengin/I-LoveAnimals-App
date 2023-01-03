@@ -4,30 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.suatzengin.i_love_animals.R
 import com.suatzengin.i_love_animals.databinding.FragmentLoginBinding
+import com.suatzengin.i_love_animals.presentation.auth.AuthViewModel
 import com.suatzengin.i_love_animals.util.UiEvent
-import com.suatzengin.i_love_animals.util.setStatusBarColor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
+
     private lateinit var binding: FragmentLoginBinding
-    private val viewModel: LoginViewModel by viewModels()
+    private val viewModel: AuthViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
-        setStatusBarColor("#4F616E")
         return binding.root
     }
 
@@ -41,7 +39,8 @@ class LoginFragment : Fragment() {
             viewModel.loginWithEmail(email = email.toString(), password = password.toString())
         }
         binding.btnToRegister.setOnClickListener {
-            findNavController().navigate(R.id.fromLoginToRegister)
+            val action = LoginFragmentDirections.fromLoginToRegister()
+            findNavController().navigate(action)
         }
         observeLogin()
     }
@@ -50,16 +49,16 @@ class LoginFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             launch {
                 viewModel.eventFlow.collectLatest { event ->
-                    when(event){
+                    when (event) {
                         is UiEvent.NavigateToHome -> {
-                            findNavController().navigate(R.id.fromLoginToAdList)
-
+                            val action = LoginFragmentDirections.fromLoginToAdList()
+                            findNavController().navigate(action)
                         }
                     }
                 }
             }
             launch {
-                viewModel.state.collectLatest { state ->
+                viewModel.stateLogin.collectLatest { state ->
                     if (state.isLoading) binding.progressLinear.visibility = View.VISIBLE
                     else binding.progressLinear.visibility = View.INVISIBLE
 
@@ -72,8 +71,4 @@ class LoginFragment : Fragment() {
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-    }
 }

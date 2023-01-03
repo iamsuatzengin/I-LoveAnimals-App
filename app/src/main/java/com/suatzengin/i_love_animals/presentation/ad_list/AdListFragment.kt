@@ -10,24 +10,27 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.suatzengin.i_love_animals.R
 import com.suatzengin.i_love_animals.databinding.FragmentAdListBinding
+import com.suatzengin.i_love_animals.presentation.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AdListFragment : Fragment() {
     private lateinit var binding: FragmentAdListBinding
     private val viewModel: AdListViewModel by viewModels()
+    private val userViewModel: AuthViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentAdListBinding.inflate(inflater,container, false)
+        binding = FragmentAdListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -52,9 +55,11 @@ class AdListFragment : Fragment() {
                 )
             }
         }
+
         binding.btnLogout.setOnClickListener {
-            viewModel.signOut()
-            findNavController().navigate(R.id.fromAdListToLogin)
+            userViewModel.signOut()
+            val action = AdListFragmentDirections.fromAdListToLogin()
+            findNavController().navigate(action)
 
         }
     }
@@ -73,7 +78,7 @@ class AdListFragment : Fragment() {
                     it.key
                 )
                 Snackbar
-                    .make(requireView(),"Ayarlardan izin ver", Snackbar.LENGTH_SHORT).show()
+                    .make(requireView(), "Ayarlardan izin ver", Snackbar.LENGTH_SHORT).show()
             }
         }
     }

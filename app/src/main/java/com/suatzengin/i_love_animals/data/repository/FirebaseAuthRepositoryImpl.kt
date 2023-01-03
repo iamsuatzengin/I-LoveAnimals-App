@@ -32,4 +32,8 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
             Resource.Error(e.localizedMessage ?: "Login failed!")
         }
     }
+
+    override fun signOut() {
+        auth.signOut()
+    }
 }
