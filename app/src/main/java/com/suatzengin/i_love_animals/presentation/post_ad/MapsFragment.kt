@@ -29,8 +29,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.suatzengin.i_love_animals.R
 import com.suatzengin.i_love_animals.databinding.FragmentMapsBinding
+import com.suatzengin.i_love_animals.domain.model.MyLocation
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+
 
 @AndroidEntryPoint
 class MapsFragment : Fragment(), OnMapReadyCallback {
@@ -59,12 +61,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        viewModel.address.observe(viewLifecycleOwner) {
+        viewModel.location.observe(viewLifecycleOwner) {
             //PostAdSheetFragment(address = it)
-            postAdSheet = PostAdSheetFragment(address = it)
-
+            postAdSheet = PostAdSheetFragment(myLocation = it)
         }
-
 
         binding.btn.setOnClickListener {
             getDeviceLocation()
@@ -84,8 +84,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         super.onDetach()
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
     }
+
     @SuppressLint("MissingPermission")
-    private fun isGpsProviderEnabled(){
+    private fun isGpsProviderEnabled() {
         val locationManager =
             requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
@@ -107,19 +108,25 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             mMap.uiSettings.isMyLocationButtonEnabled = false
         }
     }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
         updateLocationUI()
 
         mMap.apply {
-            setPadding(16,64,16,16)
+            setPadding(16, 64, 16, 16)
             setOnMapLongClickListener {
                 addMarker(
                     MarkerOptions().position(it).draggable(true)
                 )
                 animateCamera(CameraUpdateFactory.newLatLngZoom(it, DEFAULT_ZOOM.toFloat()))
-                viewModel.addAddress(getAddressLineFromLatLng(it.latitude,it.longitude))
+
+                val myLocation = MyLocation(
+                    address = getAddressLineFromLatLng(it.latitude, it.longitude),
+                    LatLng(it.latitude, it.longitude)
+                )
+                viewModel.addLocation(myLocation)
             }
 
             setOnMapClickListener {
@@ -135,7 +142,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                         marker.position.latitude,
                         marker.position.longitude
                     )
-                    viewModel.addAddress(address)
+                    val myLocation = MyLocation(
+                        address = address,
+                        LatLng(marker.position.latitude, marker.position.longitude)
+                    )
+                    viewModel.addLocation(myLocation)
 
                 }
 
@@ -186,7 +197,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                             lastKnownLocation!!.latitude,
                             lastKnownLocation!!.longitude
                         )
-                        viewModel.addAddress(address)
+                        val myLocation = MyLocation(
+                            address = address,
+                            LatLng(lastKnownLocation!!.latitude, lastKnownLocation!!.longitude)
+                        )
+                        viewModel.addLocation(myLocation)
                         if (address.isEmpty()) println("waiting for location")
                         else println("addressLine: $address")
                     } else {
@@ -197,7 +212,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                                 defaultLocation, DEFAULT_ZOOM.toFloat()
                             )
                         )
-                        println("else device location")
                         mMap.uiSettings.isMyLocationButtonEnabled = true
                     }
                 }
@@ -212,12 +226,3 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         private const val DEFAULT_ZOOM = 20
     }
 }
-/*
-title
-desc
-address
-lat,lang
-status: Boolean
-tel no: String?
-
-* */

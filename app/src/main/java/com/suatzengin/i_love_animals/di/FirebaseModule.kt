@@ -1,8 +1,12 @@
 package com.suatzengin.i_love_animals.di
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.suatzengin.i_love_animals.domain.repository.FirebaseAuthRepository
+import com.suatzengin.i_love_animals.domain.repository.FirebaseDbRepository
 import com.suatzengin.i_love_animals.domain.use_case.UseCases
+import com.suatzengin.i_love_animals.domain.use_case.ad.PostAdUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.GetUserUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.LoginUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.RegisterUseCase
@@ -23,12 +27,18 @@ object FirebaseModule {
 
     @Provides
     @Singleton
+    fun provideFirestore() = Firebase.firestore
+
+    @Provides
+    @Singleton
     fun provideUseCases(
-        repository: FirebaseAuthRepository
+        authRepository: FirebaseAuthRepository,
+        dbRepository: FirebaseDbRepository
     ) = UseCases(
-        loginUseCase = LoginUseCase(repository = repository),
-        registerUseCase = RegisterUseCase(repository = repository),
-        getUserUseCase = GetUserUseCase(repository = repository),
-        signOutUseCase = SignOutUseCase(repository = repository)
+        loginUseCase = LoginUseCase(repository = authRepository),
+        registerUseCase = RegisterUseCase(repository = authRepository),
+        getUserUseCase = GetUserUseCase(repository = authRepository),
+        signOutUseCase = SignOutUseCase(repository = authRepository),
+        postAdUseCase = PostAdUseCase(repository = dbRepository)
     )
 }
