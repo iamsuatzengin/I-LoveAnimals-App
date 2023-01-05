@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.suatzengin.i_love_animals.databinding.FragmentAdListBinding
@@ -24,13 +25,13 @@ class AdListFragment : Fragment() {
     private val viewModel: AdListViewModel by viewModels()
     private val userViewModel: AuthViewModel by activityViewModels()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentAdListBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
@@ -60,7 +61,17 @@ class AdListFragment : Fragment() {
             userViewModel.signOut()
             val action = AdListFragmentDirections.fromAdListToLogin()
             findNavController().navigate(action)
+        }
+        observeAdListData()
+    }
 
+    private fun observeAdListData(){
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect{ state ->
+                state.list.forEach {
+                    println("ad => ${it.title}")
+                }
+            }
         }
     }
 

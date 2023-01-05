@@ -124,7 +124,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
                 val myLocation = MyLocation(
                     address = getAddressLineFromLatLng(it.latitude, it.longitude),
-                    LatLng(it.latitude, it.longitude)
+                    it.latitude, it.longitude
                 )
                 viewModel.addLocation(myLocation)
             }
@@ -144,7 +144,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                     )
                     val myLocation = MyLocation(
                         address = address,
-                        LatLng(marker.position.latitude, marker.position.longitude)
+                        marker.position.latitude, marker.position.longitude
                     )
                     viewModel.addLocation(myLocation)
 
@@ -199,7 +199,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                         )
                         val myLocation = MyLocation(
                             address = address,
-                            LatLng(lastKnownLocation!!.latitude, lastKnownLocation!!.longitude)
+                            lastKnownLocation!!.latitude, lastKnownLocation!!.longitude
                         )
                         viewModel.addLocation(myLocation)
                         if (address.isEmpty()) println("waiting for location")

@@ -6,6 +6,7 @@ import com.google.firebase.ktx.Firebase
 import com.suatzengin.i_love_animals.domain.repository.FirebaseAuthRepository
 import com.suatzengin.i_love_animals.domain.repository.FirebaseDbRepository
 import com.suatzengin.i_love_animals.domain.use_case.UseCases
+import com.suatzengin.i_love_animals.domain.use_case.ad.GetAllAdUseCase
 import com.suatzengin.i_love_animals.domain.use_case.ad.PostAdUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.GetUserUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.LoginUseCase
@@ -39,6 +40,7 @@ object FirebaseModule {
         registerUseCase = RegisterUseCase(repository = authRepository),
         getUserUseCase = GetUserUseCase(repository = authRepository),
         signOutUseCase = SignOutUseCase(repository = authRepository),
-        postAdUseCase = PostAdUseCase(repository = dbRepository)
+        postAdUseCase = PostAdUseCase(repository = dbRepository),
+        getAllAdUseCase = GetAllAdUseCase(repository = dbRepository)
     )
 }

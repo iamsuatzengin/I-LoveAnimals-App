@@ -46,7 +46,6 @@ class PostAdSheetFragment(val myLocation: MyLocation?) : BottomSheetDialogFragme
 
         val title = binding.textFieldTitle.editText?.text
         val description = binding.textFieldDescription.editText?.text
-        val address = binding.filledTextField.editText?.text
         val phoneNumber = binding.textFieldNumber.editText?.text
         val date = Date(System.currentTimeMillis())
 
@@ -54,16 +53,14 @@ class PostAdSheetFragment(val myLocation: MyLocation?) : BottomSheetDialogFragme
             val advertisement = Advertisement(
                 title = title.toString(),
                 description = description.toString(),
-                latitude = myLocation?.latLng?.latitude,
-                longitude = myLocation?.latLng?.longitude,
-                address = address.toString(),
+                location = myLocation!!,
                 status = false,
                 authorPhoneNumber = phoneNumber.toString(),
                 authorEmail = auth.currentUser!!.email.toString(),
                 date = Timestamp(date)
             )
             viewModel.postNewAd(advertisement = advertisement)
-            dismiss()
+            clearTextFields()
         }
 
         val params = (view.parent as View).layoutParams as CoordinatorLayout.LayoutParams
@@ -91,6 +88,15 @@ class PostAdSheetFragment(val myLocation: MyLocation?) : BottomSheetDialogFragme
         observe()
     }
 
+    private fun clearTextFields(){
+        binding.apply {
+            filledTextField.editText?.setText("")
+            textFieldTitle.editText?.setText("")
+            textFieldDescription.editText?.setText("")
+            textFieldNumber.editText?.setText("")
+        }
+    }
+
     private fun observe(){
         lifecycleScope.launchWhenStarted {
             viewModel.eventFlow.collectLatest { event ->
@@ -104,5 +110,4 @@ class PostAdSheetFragment(val myLocation: MyLocation?) : BottomSheetDialogFragme
             }
         }
     }
-
 }
