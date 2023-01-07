@@ -1,5 +1,6 @@
 package com.suatzengin.i_love_animals.domain.use_case
 
+import com.suatzengin.i_love_animals.domain.use_case.ad.ChangeAdStatus
 import com.suatzengin.i_love_animals.domain.use_case.ad.GetAllAdUseCase
 import com.suatzengin.i_love_animals.domain.use_case.ad.PostAdUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.GetUserUseCase
@@ -14,5 +15,6 @@ data class UseCases @Inject constructor(
     val getUserUseCase: GetUserUseCase,
     val signOutUseCase: SignOutUseCase,
     val postAdUseCase: PostAdUseCase,
-    val getAllAdUseCase: GetAllAdUseCase
+    val getAllAdUseCase: GetAllAdUseCase,
+    val changeAdStatus: ChangeAdStatus
 )

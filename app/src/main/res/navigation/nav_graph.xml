@@ -6,10 +6,12 @@
     app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/mapsActivity"
+        android:id="@+id/mapsFragment"
         android:name="com.suatzengin.i_love_animals.presentation.post_ad.MapsFragment"
-        android:label="activity_maps"
-        tools:layout="@layout/fragment_maps" />
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" >
+
+    </fragment>
     <fragment
         android:id="@+id/adListFragment"
         android:name="com.suatzengin.i_love_animals.presentation.ad_list.AdListFragment"
@@ -17,12 +19,15 @@
         tools:layout="@layout/fragment_ad_list">
         <action
             android:id="@+id/fromAdListToMaps"
-            app:destination="@id/mapsActivity" />
+            app:destination="@id/mapsFragment" />
         <action
             android:id="@+id/fromAdListToLogin"
             app:destination="@id/loginFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_adListFragment_to_adDetailFragment"
+            app:destination="@id/adDetailFragment" />
 
     </fragment>
     <fragment
@@ -48,5 +53,14 @@
         <action
             android:id="@+id/fromRegisterToLogin"
             app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adDetailFragment"
+        android:name="com.suatzengin.i_love_animals.presentation.ad_detail.AdDetailFragment"
+        android:label="fragment_ad_detail"
+        tools:layout="@layout/fragment_ad_detail" >
+        <argument
+            android:name="advertisement"
+            app:argType="com.suatzengin.i_love_animals.domain.model.Advertisement" />
     </fragment>
 </navigation>

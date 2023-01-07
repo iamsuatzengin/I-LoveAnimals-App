@@ -1,11 +1,14 @@
 package com.suatzengin.i_love_animals.util
 
-import android.graphics.Color
-import android.view.WindowManager
-import androidx.fragment.app.Fragment
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import com.suatzengin.i_love_animals.R
 
-fun Fragment.setStatusBarColor(color: String){
-    val window = activity?.window
-    window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-    window?.statusBarColor = Color.parseColor(color)
+@BindingAdapter("android:setStatus")
+fun setStatusIcon(view: ImageView, status: Boolean) {
+
+    view.setImageResource(
+        if (status) R.drawable.ic_check
+        else R.drawable.close_circle_outline
+    )
 }

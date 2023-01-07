@@ -19,12 +19,8 @@ class AdListViewModel @Inject constructor(
     val state: StateFlow<AdListState>
         get() = _state
 
-    init {
-        getAllAd()
-    }
-
-    private fun getAllAd() {
-        useCases.getAllAdUseCase.invoke(direction = Query.Direction.DESCENDING)
+    fun getAllAd(status: Boolean) {
+        useCases.getAllAdUseCase.invoke(direction = Query.Direction.DESCENDING, status = status)
             .onEach { result ->
                 when (result) {
                     is Resource.Success -> {
@@ -45,4 +41,6 @@ class AdListViewModel @Inject constructor(
                 }
             }.launchIn(viewModelScope)
     }
+
+
 }

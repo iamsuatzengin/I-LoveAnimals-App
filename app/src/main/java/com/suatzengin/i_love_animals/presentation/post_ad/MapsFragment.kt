@@ -13,9 +13,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -55,34 +55,24 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
+        val supportFragmentManager =
+            childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        supportFragmentManager.getMapAsync(this)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+
         viewModel.location.observe(viewLifecycleOwner) {
             //PostAdSheetFragment(address = it)
             postAdSheet = PostAdSheetFragment(myLocation = it)
         }
-
+        findNavController().enableOnBackPressed(false)
         binding.btn.setOnClickListener {
             getDeviceLocation()
         }
 
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val supportFragmentManager =
-            childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        supportFragmentManager.getMapAsync(this)
-
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
     }
 
     @SuppressLint("MissingPermission")

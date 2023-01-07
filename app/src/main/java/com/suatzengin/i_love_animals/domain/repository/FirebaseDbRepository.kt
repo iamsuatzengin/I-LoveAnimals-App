@@ -10,4 +10,5 @@ interface FirebaseDbRepository {
 
     fun postNewAd(advertisement: Advertisement): Flow<Resource<String>>
     fun getAllAd(direction: Direction, status: Boolean): Flow<Resource<List<Advertisement>>>
+    suspend fun changeStatus(id: String, status: Boolean): Resource<String>
 }

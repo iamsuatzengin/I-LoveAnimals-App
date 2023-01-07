@@ -4,18 +4,26 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/drawable/add_location.xml" value="0.2095" />
+        <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/drawable/bg_detail.xml" value="0.109" />
         <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/drawable/cat.xml" value="0.272" />
+        <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/drawable/close_circle_outline.xml" value="0.1045" />
         <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/drawable/dog.xml" value="0.2725" />
+        <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/drawable/dog_v2.xml" value="0.1855" />
+        <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/drawable/ic_check.xml" value="0.19" />
+        <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/drawable/ic_launcher_background.xml" value="0.109" />
         <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/drawable/text_field_focus_change.xml" value="0.106" />
         <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/drawable/wave.xml" value="0.2095" />
         <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/layout/activity_maps.xml" value="0.25" />
-        <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/layout/fragment_ad_list.xml" value="0.33" />
+        <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/layout/ad_list_item.xml" value="0.1" />
+        <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/layout/fragment_ad_detail.xml" value="0.33" />
+        <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/layout/fragment_ad_list.xml" value="0.1" />
         <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/layout/fragment_login.xml" value="0.1" />
-        <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/layout/fragment_maps.xml" value="0.1636271529888551" />
+        <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/layout/fragment_maps.xml" value="0.33" />
         <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/layout/fragment_post_ad_sheet.xml" value="0.25" />
         <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/layout/fragment_register.xml" value="0.1" />
         <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/menu/current_place_menu.xml" value="0.24722222222222223" />
+        <entry key="..\:/Users/suatz/AndroidStudioProjects/ILoveAnimals/app/src/main/res/menu/menu.xml" value="0.29379485014774165" />
       </map>
     </option>
   </component>

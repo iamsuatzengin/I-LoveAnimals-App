@@ -25,5 +25,11 @@
     <string name="do_you_have_already_an_account">
         <u>Do you have already an account?</u>
     </string>
+    <string name="log_out">Log-out</string>
+    <string name="btn_completed_label">Completed</string>
+    <string name="btn_complete_label">Completed</string>
+    <string name="status_label">Beslenme Durumu</string>
+    <string name="advertisement_info_label">Advertisement Info</string>
+
 
 </resources>
