@@ -7,6 +7,8 @@ import com.suatzengin.i_love_animals.util.Resource
 import com.suatzengin.i_love_animals.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,15 +16,18 @@ import javax.inject.Inject
 @HiltViewModel
 class AdDetailViewModel @Inject constructor(
     private val changeAdStatus: ChangeAdStatus
-): ViewModel() {
+) : ViewModel() {
 
     private val _channel = Channel<UiEvent>(Channel.BUFFERED)
     val eventFlow = _channel.receiveAsFlow()
 
+    private val _stateStatus = MutableStateFlow(false)
+    val stateStatus: StateFlow<Boolean>
+        get() = _stateStatus
 
-    fun changeStatus(id: String, status: Boolean){
+    fun updateAdStatus(id: String, status: Boolean) {
         viewModelScope.launch {
-            when(val result = changeAdStatus(id = id, status = status)){
+            when (val result = changeAdStatus(id = id, status = status)) {
                 is Resource.Success -> {
                     _channel.send(UiEvent.ShowMessage(result.data ?: ""))
                 }
@@ -31,5 +36,9 @@ class AdDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setStatus(status: Boolean){
+        _stateStatus.value = status
     }
 }

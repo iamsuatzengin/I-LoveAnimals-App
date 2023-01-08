@@ -1,19 +1,13 @@
 package com.suatzengin.i_love_animals.presentation.ad_list
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -24,8 +18,9 @@ import com.suatzengin.i_love_animals.databinding.FragmentAdListBinding
 import com.suatzengin.i_love_animals.domain.model.Advertisement
 import com.suatzengin.i_love_animals.presentation.ad_list.recycler_view.AdListRecyclerAdapter
 import com.suatzengin.i_love_animals.util.ClickListener
+import com.suatzengin.i_love_animals.util.checkLocationPermission
+import com.suatzengin.i_love_animals.util.observeFlows
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AdListFragment : Fragment() {
@@ -51,23 +46,19 @@ class AdListFragment : Fragment() {
         filterByStatus()
         observeAdListData()
         binding.postAd.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-
-                findNavController().navigate(R.id.mapsFragment)
-            } else {
-                requestPermission.launch(
-                    arrayOf(
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
+            checkLocationPermission(
+                functionIfGranted = {
+                    findNavController().navigate(R.id.mapsFragment)
+                },
+                functionIfDenied = {
+                    requestPermission.launch(
+                        arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
                     )
-                )
-            }
+                }
+            )
         }
     }
 
@@ -80,9 +71,7 @@ class AdListFragment : Fragment() {
                         1 -> viewModel.getAllAd(status = false)
                     }
                 }
-
                 override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
                 override fun onTabReselected(tab: TabLayout.Tab?) {}
             })
         }
@@ -104,14 +93,11 @@ class AdListFragment : Fragment() {
     }
 
     private fun observeAdListData() {
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { state ->
-                    adapter.setData(state.list)
-                }
+        observeFlows {
+            viewModel.state.collect { state ->
+                adapter.setData(state.list)
             }
         }
-
     }
 
     private val requestPermission = registerForActivityResult(

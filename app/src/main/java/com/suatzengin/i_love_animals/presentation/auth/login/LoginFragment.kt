@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.suatzengin.i_love_animals.databinding.FragmentLoginBinding
 import com.suatzengin.i_love_animals.presentation.auth.AuthViewModel
 import com.suatzengin.i_love_animals.util.UiEvent
+import com.suatzengin.i_love_animals.util.observeFlows
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -46,8 +46,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun observeLogin() {
-        lifecycleScope.launchWhenStarted {
-            launch {
+        observeFlows { scope ->
+            scope.launch {
                 viewModel.eventFlow.collectLatest { event ->
                     when (event) {
                         is UiEvent.NavigateToHome -> {
@@ -57,7 +57,7 @@ class LoginFragment : Fragment() {
                     }
                 }
             }
-            launch {
+            scope.launch {
                 viewModel.stateLogin.collectLatest { state ->
                     if (state.isLoading) binding.progressLinear.visibility = View.VISIBLE
                     else binding.progressLinear.visibility = View.INVISIBLE

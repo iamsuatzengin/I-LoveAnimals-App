@@ -2,16 +2,13 @@ package com.suatzengin.i_love_animals.presentation.ad_detail
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -23,8 +20,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.suatzengin.i_love_animals.R
 import com.suatzengin.i_love_animals.databinding.FragmentAdDetailBinding
 import com.suatzengin.i_love_animals.util.UiEvent
+import com.suatzengin.i_love_animals.util.checkLocationPermission
+import com.suatzengin.i_love_animals.util.observeFlows
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AdDetailFragment : Fragment(), OnMapReadyCallback {
@@ -40,26 +40,23 @@ class AdDetailFragment : Fragment(), OnMapReadyCallback {
         // Inflate the layout for this fragment
         binding = FragmentAdDetailBinding.inflate(inflater, container, false)
 
-        if (ContextCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-
-            val supportFragmentManager = childFragmentManager.findFragmentById(
-                R.id.map_detail
-            ) as SupportMapFragment
-            supportFragmentManager.getMapAsync(this)
-        } else {
-            requestPermission.launch(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
+        checkLocationPermission(
+            functionIfGranted = {
+                val supportFragmentManager = childFragmentManager.findFragmentById(
+                    R.id.map_detail
+                ) as SupportMapFragment
+                supportFragmentManager.getMapAsync(this)
+            },
+            functionIfDenied = {
+                requestPermission.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
                 )
-            )
-        }
-
+            }
+        )
+        viewModel.setStatus(args.advertisement.status)
         return binding.root
     }
 
@@ -69,17 +66,29 @@ class AdDetailFragment : Fragment(), OnMapReadyCallback {
         binding.ad = args.advertisement
         binding.btnComplete.setOnClickListener {
             val ad = args.advertisement.copy(status = !(args.advertisement.status))
-            viewModel.changeStatus(ad.id!!, ad.status)
+            viewModel.setStatus(ad.status)
+            viewModel.updateAdStatus(ad.id!!, ad.status)
         }
 
-        if (args.advertisement.status) binding.btnComplete.isEnabled = false
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.eventFlow.collectLatest { event ->
-                when(event){
-                    is UiEvent.ShowMessage -> {
-                        Snackbar.make(view,event.message,Snackbar.LENGTH_SHORT)
-                            .show()
+        observeFlows { scope ->
+            scope.launch {
+                viewModel.eventFlow.collectLatest { event ->
+                    when (event) {
+                        is UiEvent.ShowMessage -> {
+                            Snackbar.make(view, event.message, Snackbar.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                }
+            }
+            scope.launch {
+                viewModel.stateStatus.collectLatest {
+                    if (it) {
+                        binding.btnComplete.isEnabled = false
+                        binding.iconStatus.setImageResource(R.drawable.ic_check)
+                    } else {
+                        binding.btnComplete.isEnabled = true
+                        binding.iconStatus.setImageResource(R.drawable.close_circle_outline)
                     }
                 }
             }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
@@ -16,6 +15,7 @@ import com.suatzengin.i_love_animals.databinding.FragmentPostAdSheetBinding
 import com.suatzengin.i_love_animals.domain.model.Advertisement
 import com.suatzengin.i_love_animals.domain.model.MyLocation
 import com.suatzengin.i_love_animals.util.UiEvent
+import com.suatzengin.i_love_animals.util.observeFlows
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import java.util.*
@@ -98,7 +98,7 @@ class PostAdSheetFragment(val myLocation: MyLocation?) : BottomSheetDialogFragme
     }
 
     private fun observe(){
-        lifecycleScope.launchWhenStarted {
+        observeFlows {
             viewModel.eventFlow.collectLatest { event ->
                 when(event){
                     is UiEvent.ShowMessage -> {
