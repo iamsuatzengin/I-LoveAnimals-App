@@ -1,24 +1,19 @@
 package com.suatzengin.i_love_animals.presentation.ad_list
 
-import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.suatzengin.i_love_animals.R
 import com.suatzengin.i_love_animals.databinding.FragmentAdListBinding
 import com.suatzengin.i_love_animals.domain.model.Advertisement
 import com.suatzengin.i_love_animals.presentation.ad_list.recycler_view.AdListRecyclerAdapter
 import com.suatzengin.i_love_animals.util.ClickListener
-import com.suatzengin.i_love_animals.util.checkLocationPermission
 import com.suatzengin.i_love_animals.util.observeFlows
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,7 +30,6 @@ class AdListFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentAdListBinding.inflate(inflater, container, false)
         setupRecyclerView()
-
         return binding.root
     }
 
@@ -45,21 +39,6 @@ class AdListFragment : Fragment() {
 
         filterByStatus()
         observeAdListData()
-        binding.postAd.setOnClickListener {
-            checkLocationPermission(
-                functionIfGranted = {
-                    findNavController().navigate(R.id.mapsFragment)
-                },
-                functionIfDenied = {
-                    requestPermission.launch(
-                        arrayOf(
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                        )
-                    )
-                }
-            )
-        }
     }
 
     private fun filterByStatus() {
@@ -96,24 +75,6 @@ class AdListFragment : Fragment() {
         observeFlows {
             viewModel.state.collect { state ->
                 adapter.setData(state.list)
-            }
-        }
-    }
-
-    private val requestPermission = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permission ->
-        permission.entries.forEach {
-            if (it.value) {
-                //granted
-                findNavController().navigate(R.id.mapsFragment)
-            } else {
-                // Permission is denied
-                shouldShowRequestPermissionRationale(
-                    it.key
-                )
-                Snackbar
-                    .make(requireView(), "Ayarlardan izin ver", Snackbar.LENGTH_SHORT).show()
             }
         }
     }

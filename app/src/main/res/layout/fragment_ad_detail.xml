@@ -13,18 +13,28 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll"
         android:layout_width="match_parent"
-        tools:context=".presentation.ad_detail.AdDetailFragment"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".presentation.ad_detail.AdDetailFragment">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
+
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/map_detail"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/back_button"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_arrow_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,7 +68,7 @@
 
                     <TextView
                         android:id="@+id/tv_status"
-                        style="@style/TextAppearance.Material3.TitleLarge"
+                        style="@style/TextAppearance.Material3.TitleMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
@@ -69,14 +79,14 @@
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/icon_status"
-                        android:setStatus="@{ad.status}"
-                        tools:src="@drawable/ic_check"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="8dp"
                         android:layout_weight="2"
-                        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
+                        android:setStatus="@{ad.status}"
+                        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
+                        tools:src="@drawable/ic_check" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -119,24 +129,6 @@
                         app:layout_constraintTop_toBottomOf="@id/tv_title_detail"
                         tools:text="DescriptionDescriptionDescriptionDescriptionDescription
             DescriptionDescriptionDescriptionDescription" />
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-
-            <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewElevatedStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:id="@+id/card_view_address"
-                app:layout_constraintTop_toBottomOf="@id/card_view_fln">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/tv_address_label"
@@ -158,8 +150,8 @@
 
                         tools:text="@string/address_label" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
+            </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_complete"
@@ -168,8 +160,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:text="@string/btn_completed_label"
-                app:layout_constraintTop_toBottomOf="@id/card_view_address"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_view_fln" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

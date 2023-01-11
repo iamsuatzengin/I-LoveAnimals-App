@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.suatzengin.i_love_animals.R
 import com.suatzengin.i_love_animals.databinding.FragmentRegisterBinding
 import com.suatzengin.i_love_animals.presentation.auth.AuthViewModel
 import com.suatzengin.i_love_animals.util.UiEvent
@@ -36,9 +35,14 @@ class RegisterFragment : Fragment() {
 
         val email = binding.textFieldEmail.editText?.text
         val password = binding.textFieldPassword.editText?.text
-
+        val firstName = binding.textFieldName.editText?.text
+        val lastName = binding.textFieldSurname.editText?.text
         binding.btnRegister.setOnClickListener {
-            viewModel.createUserWithEmail(email.toString(), password.toString())
+            viewModel.createUserWithEmail(
+                email = email.toString(),
+                password = password.toString(),
+                fullName = "$firstName $lastName"
+            )
         }
         binding.tvHaveAccount.setOnClickListener { findNavController().popBackStack() }
 
@@ -51,7 +55,12 @@ class RegisterFragment : Fragment() {
                 viewModel.eventFlow.collectLatest { event ->
                     when (event) {
                         is UiEvent.NavigateToLogin -> {
-                            findNavController().navigate(R.id.fromRegisterToLogin)
+                            val action =
+                                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                            findNavController().navigate(action)
+                        }
+                        is UiEvent.ShowMessage -> {
+                            Snackbar.make(requireView(), event.message, Snackbar.LENGTH_LONG).show()
                         }
                     }
                 }

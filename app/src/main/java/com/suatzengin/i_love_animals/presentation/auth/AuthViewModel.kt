@@ -46,7 +46,6 @@ class AuthViewModel @Inject constructor(
                 .collectLatest { result ->
                     when (result) {
                         is Resource.Success -> {
-
                             _stateLogin.update {
                                 it.copy(isLoading = false, message = result.message ?: "Login")
                             }
@@ -65,10 +64,10 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun createUserWithEmail(email: String?, password: String?) {
+    fun createUserWithEmail(email: String?, password: String?, fullName: String?) {
         viewModelScope.launch {
             _stateRegister.update { it.copy(isLoading = true) }
-            useCases.registerUseCase.invoke(email = email, password = password)
+            useCases.registerUseCase.invoke(email = email, password = password, fullName = fullName)
                 .collectLatest { result ->
                     when (result) {
                         is Resource.Success -> {
@@ -76,15 +75,16 @@ class AuthViewModel @Inject constructor(
                         }
                         is Resource.Error -> {
                             _stateRegister.update {
-                                it.copy(isLoading = false, message = result.message ?: "Register failed!")
+                                it.copy(isLoading = false)
                             }
+                            _eventChannel.send(
+                                UiEvent.ShowMessage(
+                                    result.message ?: "Register Failed!"
+                                )
+                            )
                         }
                     }
                 }
         }
-    }
-
-    fun signOut() {
-        useCases.signOutUseCase.invoke()
     }
 }

@@ -24,10 +24,15 @@
     <string name="do_you_have_already_an_account">
         <u>Zaten bir hesabın var mı?</u>
     </string>
-    <string name="log_out">Log-out</string>
+    <string name="log_out">Çıkış Yap</string>
     <string name="btn_completed_label">Tamamlandı</string>
     <string name="status_label">Beslenme Durumu</string>
     <string name="advertisement_info_label">Duyuru Bilgisi</string>
-
+    <string name="home_label">Home</string>
+    <string name="profile_label">Profile</string>
+    <string name="title_activity_intro">IntroActivity</string>
+    <string name="beslenenler">Beslenenler</string>
+    <string name="beslenmeyenler">Beslenmeyenler</string>
+    <string name="post_new_ad">Yeni duyuru ekleme</string>
 
 </resources>

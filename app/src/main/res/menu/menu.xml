@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    >
 
-    <item android:id="@+id/logout"
-        android:title="@string/log_out"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_logout"
+    <item android:id="@+id/adListFragment"
+        android:title="@string/home_label"
+        android:icon="@drawable/ic_home"
+        />
+    <item
+        android:id="@+id/placeholder"
+        android:title="" />
+    <item android:id="@+id/profileFragment"
+        android:title="@string/profile_label"
+        android:icon="@drawable/ic_person"
         />
 </menu>

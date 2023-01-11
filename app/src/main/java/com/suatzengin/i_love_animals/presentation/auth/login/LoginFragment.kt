@@ -1,5 +1,6 @@
 package com.suatzengin.i_love_animals.presentation.auth.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.suatzengin.i_love_animals.databinding.FragmentLoginBinding
+import com.suatzengin.i_love_animals.presentation.MainActivity
 import com.suatzengin.i_love_animals.presentation.auth.AuthViewModel
 import com.suatzengin.i_love_animals.util.UiEvent
 import com.suatzengin.i_love_animals.util.observeFlows
@@ -39,7 +41,7 @@ class LoginFragment : Fragment() {
             viewModel.loginWithEmail(email = email.toString(), password = password.toString())
         }
         binding.btnToRegister.setOnClickListener {
-            val action = LoginFragmentDirections.fromLoginToRegister()
+            val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
             findNavController().navigate(action)
         }
         observeLogin()
@@ -51,8 +53,9 @@ class LoginFragment : Fragment() {
                 viewModel.eventFlow.collectLatest { event ->
                     when (event) {
                         is UiEvent.NavigateToHome -> {
-                            val action = LoginFragmentDirections.fromLoginToAdList()
-                            findNavController().navigate(action)
+                            val intent = Intent(requireContext(), MainActivity::class.java)
+                            startActivity(intent)
+                            activity?.finish()
                         }
                     }
                 }

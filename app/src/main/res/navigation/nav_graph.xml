@@ -2,65 +2,47 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/adListFragment"
+    android:id="@+id/nav_graph">
 
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.suatzengin.i_love_animals.presentation.post_ad.MapsFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" >
-
+        tools:layout="@layout/fragment_maps">
+        <action
+            android:id="@+id/action_mapsFragment_to_adListFragment"
+            app:destination="@id/adListFragment" />
     </fragment>
     <fragment
         android:id="@+id/adListFragment"
         android:name="com.suatzengin.i_love_animals.presentation.ad_list.AdListFragment"
         android:label="fragment_ad_list"
         tools:layout="@layout/fragment_ad_list">
+
+
         <action
-            android:id="@+id/fromAdListToMaps"
+            android:id="@+id/action_adListFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
-        <action
-            android:id="@+id/fromAdListToLogin"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_adListFragment_to_adDetailFragment"
             app:destination="@id/adDetailFragment" />
-
-    </fragment>
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.suatzengin.i_love_animals.presentation.auth.login.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login">
-
-        <action
-            android:id="@+id/fromLoginToRegister"
-            app:destination="@id/registerFragment" />
-        <action
-            android:id="@+id/fromLoginToAdList"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"
-            app:destination="@id/adListFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/registerFragment"
-        android:name="com.suatzengin.i_love_animals.presentation.auth.register.RegisterFragment"
-        android:label="fragment_register"
-        tools:layout="@layout/fragment_register">
-        <action
-            android:id="@+id/fromRegisterToLogin"
-            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/adDetailFragment"
         android:name="com.suatzengin.i_love_animals.presentation.ad_detail.AdDetailFragment"
         android:label="fragment_ad_detail"
-        tools:layout="@layout/fragment_ad_detail" >
+        tools:layout="@layout/fragment_ad_detail">
         <argument
             android:name="advertisement"
             app:argType="com.suatzengin.i_love_animals.domain.model.Advertisement" />
+        <action
+            android:id="@+id/action_adDetailFragment_to_adListFragment"
+            app:destination="@id/adListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.suatzengin.i_love_animals.presentation.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

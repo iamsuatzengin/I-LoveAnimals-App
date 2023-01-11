@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -40,7 +41,7 @@ class AdDetailFragment : Fragment(), OnMapReadyCallback {
         // Inflate the layout for this fragment
         binding = FragmentAdDetailBinding.inflate(inflater, container, false)
 
-        checkLocationPermission(
+        activity?.checkLocationPermission(
             functionIfGranted = {
                 val supportFragmentManager = childFragmentManager.findFragmentById(
                     R.id.map_detail
@@ -70,6 +71,10 @@ class AdDetailFragment : Fragment(), OnMapReadyCallback {
             viewModel.updateAdStatus(ad.id!!, ad.status)
         }
 
+        binding.backButton.setOnClickListener {
+            val action = AdDetailFragmentDirections.actionAdDetailFragmentToAdListFragment()
+            findNavController().navigate(action)
+        }
         observeFlows { scope ->
             scope.launch {
                 viewModel.eventFlow.collectLatest { event ->
@@ -110,8 +115,11 @@ class AdDetailFragment : Fragment(), OnMapReadyCallback {
                 shouldShowRequestPermissionRationale(
                     it.key
                 )
-                Snackbar
-                    .make(requireView(), "Ayarlardan izin ver", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(
+                    requireView(),
+                    "Uygulama ayarlarından izin vermelisiniz!",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
     }

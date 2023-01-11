@@ -1,6 +1,7 @@
 package com.suatzengin.i_love_animals.util
 
 import android.Manifest
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -29,15 +30,17 @@ inline fun Fragment.observeFlows(crossinline observeFunction: suspend (Coroutine
         }
     }
 }
-
-fun Fragment.checkLocationPermission(
+/**
+ * This can be re-designed for all permission by passing the permission strings.
+ **/
+fun Activity.checkLocationPermission(
     functionIfGranted: () -> Unit,
     functionIfDenied: () -> Unit
 ) {
     if (ContextCompat.checkSelfPermission(
-            requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
+            this, Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
-            requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
+            this, Manifest.permission.ACCESS_COARSE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
     ) {
         functionIfGranted()

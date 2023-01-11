@@ -8,5 +8,5 @@ class GetAllAdUseCase @Inject constructor(
     private val repository: FirebaseDbRepository
 ) {
     operator fun invoke(direction: Direction, status: Boolean = false) =
-        repository.getAllAd(direction, status)
+     repository.getAllAd(direction = direction, status = status)
 }
