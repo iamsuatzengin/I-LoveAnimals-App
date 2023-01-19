@@ -4,16 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.firebase.firestore.Query.Direction
 import com.suatzengin.i_love_animals.databinding.FragmentAdListBinding
 import com.suatzengin.i_love_animals.domain.model.Advertisement
 import com.suatzengin.i_love_animals.presentation.ad_list.recycler_view.AdListRecyclerAdapter
 import com.suatzengin.i_love_animals.util.ClickListener
+import com.suatzengin.i_love_animals.util.NoticeDialogListener
 import com.suatzengin.i_love_animals.util.observeFlows
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,10 +38,28 @@ class AdListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getAllAd(true)
 
         filterByStatus()
         observeAdListData()
+
+        binding.filterBarLayout.btnSort.setOnClickListener {
+            val dialog = SortDialogFragment(
+                listener = object : NoticeDialogListener {
+                    override fun onDialogPositiveClick(
+                        dialog: DialogFragment,
+                        direction: Direction
+                    ) {
+                        viewModel.setDirection(direction = direction)
+                    }
+
+                    override fun onDialogNegativeClick(dialog: DialogFragment) {
+                        dialog.dismiss()
+                    }
+
+                }
+            )
+            dialog.show(activity?.supportFragmentManager!!, "SortDialog")
+        }
     }
 
     private fun filterByStatus() {
@@ -46,10 +67,11 @@ class AdListFragment : Fragment() {
             tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     when (tab?.position) {
-                        0 -> viewModel.getAllAd(status = true)
-                        1 -> viewModel.getAllAd(status = false)
+                        0 -> viewModel.setStatus(status = false, selectedTabPosition = 0)
+                        1 -> viewModel.setStatus(status = true, selectedTabPosition = 1)
                     }
                 }
+
                 override fun onTabUnselected(tab: TabLayout.Tab?) {}
                 override fun onTabReselected(tab: TabLayout.Tab?) {}
             })
@@ -75,6 +97,7 @@ class AdListFragment : Fragment() {
         observeFlows {
             viewModel.state.collect { state ->
                 adapter.setData(state.list)
+                binding.tabLayout.getTabAt(state.selectedTabPosition)?.select()
             }
         }
     }

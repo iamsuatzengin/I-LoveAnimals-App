@@ -31,8 +31,12 @@
     <string name="home_label">Home</string>
     <string name="profile_label">Profile</string>
     <string name="title_activity_intro">IntroActivity</string>
-    <string name="beslenenler">Beslenenler</string>
-    <string name="beslenmeyenler">Beslenmeyenler</string>
+    <string name="not_completed">Bekleyenler</string>
+    <string name="completed">Tamamlanan</string>
     <string name="post_new_ad">Yeni duyuru ekleme</string>
+    <string name="sort">Sırala</string>
+    <string name="filter">Filtre</string>
+    <string name="date_descending">En yeniden eskiye</string>
+    <string name="date_ascending">En eskiden yeniye</string>
 
 </resources>

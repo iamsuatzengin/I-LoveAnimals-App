@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface FirebaseDbRepository {
 
-    fun postNewAd(advertisement: Advertisement): Flow<Resource<String>>
+    suspend fun postNewAd(advertisement: Advertisement)
     fun getAllAd(direction: Direction, status: Boolean): Flow<Resource<List<Advertisement>>>
     suspend fun changeStatus(id: String, status: Boolean): Resource<String>
 }

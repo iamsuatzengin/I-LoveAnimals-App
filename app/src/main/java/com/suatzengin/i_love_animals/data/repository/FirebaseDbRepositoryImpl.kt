@@ -10,7 +10,6 @@ import com.suatzengin.i_love_animals.util.Resource
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -19,42 +18,35 @@ class FirebaseDbRepositoryImpl @Inject constructor(
 ) : FirebaseDbRepository {
 
 
-    override fun postNewAd(advertisement: Advertisement) = flow {
-        emit(Resource.Loading())
-        try {
-
-            val document = firestore.collection(ADVERTISEMENT).document()
-            advertisement.id = document.id
-            document.set(advertisement).await()
-            emit(Resource.Success(data = "Successfully added!"))
-        } catch (e: Exception) {
-            emit(Resource.Error(message = e.localizedMessage ?: "Something went wrong!"))
-        }
+    override suspend fun postNewAd(advertisement: Advertisement) {
+        val document = firestore.collection(ADVERTISEMENT).document()
+        advertisement.id = document.id
+        document.set(advertisement).await()
     }
 
     override fun getAllAd(
         direction: Direction,
         status: Boolean
     ): Flow<Resource<List<Advertisement>>> = callbackFlow {
-            firestore.collection(ADVERTISEMENT)
-                .orderBy("date", direction)
-                .get()
-                .addOnSuccessListener { result ->
-                    val adList = ArrayList<Advertisement>()
-                    for (document in result) {
-                        val myAdvertisement = document.toObject<Advertisement>()
-                        adList.add(myAdvertisement)
-                    }
-                    trySend(Resource.Success(data = adList.filter { it.status == status }))
-                }.addOnFailureListener { e ->
-                    trySend(
-                        Resource.Error(
-                            message = e.localizedMessage ?: "Something went wrong!"
-                        )
-                    )
+        firestore.collection(ADVERTISEMENT)
+            .orderBy("date", direction)
+            .get()
+            .addOnSuccessListener { result ->
+                val adList = ArrayList<Advertisement>()
+                for (document in result) {
+                    val myAdvertisement = document.toObject<Advertisement>()
+                    adList.add(myAdvertisement)
                 }
-            awaitClose { close() }
-        }
+                trySend(Resource.Success(data = adList.filter { it.status == status }))
+            }.addOnFailureListener { e ->
+                trySend(
+                    Resource.Error(
+                        message = e.localizedMessage ?: "Something went wrong!"
+                    )
+                )
+            }
+        awaitClose { close() }
+    }
 
     override suspend fun changeStatus(id: String, status: Boolean): Resource<String> {
         return try {

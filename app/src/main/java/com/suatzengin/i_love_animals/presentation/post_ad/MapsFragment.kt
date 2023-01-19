@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -65,10 +64,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.location.observe(viewLifecycleOwner) {
-            //PostAdSheetFragment(address = it)
             postAdSheet = PostAdSheetFragment(myLocation = it)
         }
-        findNavController().enableOnBackPressed(false)
+
         binding.btn.setOnClickListener {
             getDeviceLocation()
         }

@@ -3,12 +3,10 @@ package com.suatzengin.i_love_animals.presentation
 import android.Manifest
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
 import com.suatzengin.i_love_animals.R
 import com.suatzengin.i_love_animals.databinding.ActivityMainBinding
@@ -27,16 +25,13 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        NavigationUI.setupWithNavController(
-            binding.bottomNavigationView, navController
-        )
-
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.mapsFragment, R.id.adDetailFragment -> {
                     binding.bottomAppBar.visibility = View.INVISIBLE
                     binding.postAd.visibility = View.INVISIBLE
                 }
+
                 R.id.adListFragment -> {
                     binding.bottomAppBar.visibility = View.VISIBLE
                     binding.postAd.visibility = View.VISIBLE
@@ -58,16 +53,25 @@ class MainActivity : AppCompatActivity() {
                 }
             )
         }
-    }
+        binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.home -> {
+                    navController.navigate(R.id.adListFragment)
+                    true
+                }
 
-    override fun onResume() {
-        super.onResume()
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                navController.popBackStack()
+                R.id.profile -> {
+                    navController.navigate(R.id.profileFragment)
+                    true
+                }
+
+                else -> false
             }
         }
-        onBackPressedDispatcher.addCallback(callback)
+    }
+
+    override fun onNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onNavigateUp()
     }
 
     private val requestPermission = registerForActivityResult(
