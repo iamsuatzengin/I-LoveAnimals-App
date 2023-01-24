@@ -3,6 +3,7 @@ package com.suatzengin.i_love_animals.presentation.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
+import com.suatzengin.i_love_animals.domain.model.User
 import com.suatzengin.i_love_animals.domain.use_case.UseCases
 import com.suatzengin.i_love_animals.util.Resource
 import com.suatzengin.i_love_animals.util.UiEvent
@@ -64,10 +65,10 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun createUserWithEmail(email: String?, password: String?, fullName: String?) {
+    fun createUserWithEmail(user: User) {
         viewModelScope.launch {
             _stateRegister.update { it.copy(isLoading = true) }
-            useCases.registerUseCase.invoke(email = email, password = password, fullName = fullName)
+            useCases.registerUseCase.invoke(user)
                 .collectLatest { result ->
                     when (result) {
                         is Resource.Success -> {

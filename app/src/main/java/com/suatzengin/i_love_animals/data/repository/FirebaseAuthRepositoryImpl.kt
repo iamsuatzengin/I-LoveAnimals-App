@@ -4,30 +4,32 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
+import com.suatzengin.i_love_animals.domain.model.User
 import com.suatzengin.i_love_animals.domain.repository.FirebaseAuthRepository
+import com.suatzengin.i_love_animals.util.Constants.USER
 import com.suatzengin.i_love_animals.util.Resource
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class FirebaseAuthRepositoryImpl @Inject constructor(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val firestore: FirebaseFirestore
 ) : FirebaseAuthRepository {
 
     override val currentUser: FirebaseUser?
         get() = auth.currentUser
 
-    override suspend fun register(
-        email: String, password: String, fullName: String
-    ): Resource<FirebaseUser> {
+    override suspend fun register(user: User): Resource<FirebaseUser> {
         return try {
-            val result = auth.createUserWithEmailAndPassword(email,password).await()
+            val result = auth.createUserWithEmailAndPassword(user.email, user.password).await()
             val profileUpdates = userProfileChangeRequest {
-                displayName = fullName
+                displayName = user.fullName
             }
             result.user?.updateProfile(profileUpdates)
-
-            Resource.Success(result.user ?: throw FirebaseAuthException("","Register failed!"))
-        }catch (e: Exception){
+            firestore.collection(USER).document(user.email).set(user)
+            Resource.Success(result.user ?: throw FirebaseAuthException("", "Register failed!"))
+        } catch (e: Exception) {
             Resource.Error(e.localizedMessage ?: "Register failed!")
         }
     }
@@ -35,8 +37,8 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
     override suspend fun login(email: String, password: String): Resource<FirebaseUser> {
         return try {
             val result = auth.signInWithEmailAndPassword(email, password).await()
-            Resource.Success(result.user ?: throw FirebaseAuthException("","Login failed!"))
-        }catch (e: Exception){
+            Resource.Success(result.user ?: throw FirebaseAuthException("", "Login failed!"))
+        } catch (e: Exception) {
             Resource.Error(e.localizedMessage ?: "Login failed!")
         }
     }

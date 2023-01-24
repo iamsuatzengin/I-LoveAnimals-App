@@ -153,7 +153,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             longitude,
             1
         )
-        return addresses[0].getAddressLine(0)
+        return addresses?.get(0)?.getAddressLine(0) ?: ""
     }
 
     @SuppressLint("MissingPermission")

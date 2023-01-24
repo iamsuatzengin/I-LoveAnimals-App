@@ -1,11 +1,14 @@
 package com.suatzengin.i_love_animals.data.repository
 
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query.Direction
 import com.google.firebase.firestore.ktx.toObject
 import com.suatzengin.i_love_animals.domain.model.Advertisement
+import com.suatzengin.i_love_animals.domain.model.User
 import com.suatzengin.i_love_animals.domain.repository.FirebaseDbRepository
 import com.suatzengin.i_love_animals.util.Constants.ADVERTISEMENT
+import com.suatzengin.i_love_animals.util.Constants.USER
 import com.suatzengin.i_love_animals.util.Resource
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -22,30 +25,28 @@ class FirebaseDbRepositoryImpl @Inject constructor(
         val document = firestore.collection(ADVERTISEMENT).document()
         advertisement.id = document.id
         document.set(advertisement).await()
+
     }
 
     override fun getAllAd(
         direction: Direction,
         status: Boolean
     ): Flow<Resource<List<Advertisement>>> = callbackFlow {
-        firestore.collection(ADVERTISEMENT)
+        val collection = firestore.collection(ADVERTISEMENT)
             .orderBy("date", direction)
-            .get()
-            .addOnSuccessListener { result ->
+            .addSnapshotListener { snapshots, error ->
+                if (error != null) {
+                    trySend(Resource.Error(message = error.localizedMessage ?: "Something went wrong!"))
+                    return@addSnapshotListener
+                }
                 val adList = ArrayList<Advertisement>()
-                for (document in result) {
+                for (document in snapshots!!) {
                     val myAdvertisement = document.toObject<Advertisement>()
                     adList.add(myAdvertisement)
                 }
                 trySend(Resource.Success(data = adList.filter { it.status == status }))
-            }.addOnFailureListener { e ->
-                trySend(
-                    Resource.Error(
-                        message = e.localizedMessage ?: "Something went wrong!"
-                    )
-                )
             }
-        awaitClose { close() }
+        awaitClose { collection.remove() }
     }
 
     override suspend fun changeStatus(id: String, status: Boolean): Resource<String> {
@@ -58,5 +59,23 @@ class FirebaseDbRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage ?: "Something went wrong!")
         }
+    }
+    override suspend fun getUser(email: String): User? {
+        val docRef = firestore.collection(USER).document(email)
+        val getDoc = docRef.get().await()
+        println("user from repo : ${getDoc.toObject<User>()}")
+        return getDoc.toObject<User>()
+    }
+
+    override suspend fun updateUserAdCount(email: String) {
+        firestore.collection(USER).document(email).update(
+            "adCount", FieldValue.increment(1)
+        ).await()
+    }
+
+    override suspend fun updateUserAdCompletedCount(email: String) {
+        firestore.collection(USER).document(email).update(
+            "completedAdCount", FieldValue.increment(1)
+        )
     }
 }

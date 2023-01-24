@@ -26,14 +26,15 @@
                 android:layout_margin="8dp"
                 android:src="@drawable/dog_v2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/animal_icon" />
 
             <TextView
                 android:id="@+id/tv_title"
                 style="@style/TextAppearance.Material3.TitleMedium"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_header_icon"
                 app:layout_constraintStart_toEndOf="@id/iv_header_icon"
                 app:layout_constraintTop_toTopOf="@+id/iv_header_icon"
@@ -45,6 +46,7 @@
                 android:layout_margin="12dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:contentDescription="@string/settings_icon_for_ad"
                 android:src="@drawable/ic_more"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -73,7 +75,7 @@
                 android:id="@+id/icon_location"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/ic_location"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +86,7 @@
                 style="@style/TextAppearance.Material3.TitleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/address_label"
                 app:layout_constraintBottom_toBottomOf="@+id/icon_location"

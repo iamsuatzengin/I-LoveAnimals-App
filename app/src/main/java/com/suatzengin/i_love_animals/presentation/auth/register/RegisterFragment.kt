@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.suatzengin.i_love_animals.databinding.FragmentRegisterBinding
+import com.suatzengin.i_love_animals.domain.model.User
 import com.suatzengin.i_love_animals.presentation.auth.AuthViewModel
 import com.suatzengin.i_love_animals.util.UiEvent
 import com.suatzengin.i_love_animals.util.observeFlows
@@ -38,11 +39,11 @@ class RegisterFragment : Fragment() {
         val firstName = binding.textFieldName.editText?.text
         val lastName = binding.textFieldSurname.editText?.text
         binding.btnRegister.setOnClickListener {
-            viewModel.createUserWithEmail(
-                email = email.toString(),
-                password = password.toString(),
-                fullName = "$firstName $lastName"
+            val user = User(
+                email = email.toString(), password = password.toString(),
+                fullName = "$firstName $lastName", adCount = 0
             )
+            viewModel.createUserWithEmail(user)
         }
         binding.tvHaveAccount.setOnClickListener { findNavController().popBackStack() }
 

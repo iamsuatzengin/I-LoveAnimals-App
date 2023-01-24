@@ -32,13 +32,20 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
-            tvEmail.text = viewModel.currentUser?.email
-            tvFullname.text = viewModel.currentUser?.displayName
-        }
-
         binding.btnLogout.setOnClickListener {
             viewModel.logOut()
+        }
+
+
+        observeFlows {
+            viewModel.state.collectLatest { state ->
+                with(binding) {
+                    tvEmail.text = state.user?.email
+                    tvFullname.text = state.user?.fullName
+                    tvAdCount.text = state.user?.adCount.toString()
+                    tvCompletedAdCount.text = state.user?.completedAdCount.toString()
+                }
+            }
         }
 
         observeFlows {

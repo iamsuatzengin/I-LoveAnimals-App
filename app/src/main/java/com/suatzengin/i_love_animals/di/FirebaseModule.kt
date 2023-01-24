@@ -13,6 +13,9 @@ import com.suatzengin.i_love_animals.domain.use_case.auth.GetUserUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.LoginUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.RegisterUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.SignOutUseCase
+import com.suatzengin.i_love_animals.domain.use_case.user.ProfileUseCase
+import com.suatzengin.i_love_animals.domain.use_case.user.UpdateUserAdCompletedCount
+import com.suatzengin.i_love_animals.domain.use_case.user.UpdateUserAdCount
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,6 +46,9 @@ object FirebaseModule {
         signOutUseCase = SignOutUseCase(repository = authRepository),
         postAdUseCase = PostAdUseCase(repository = dbRepository),
         getAllAdUseCase = GetAllAdUseCase(repository = dbRepository),
-        changeAdStatus = ChangeAdStatus(repository = dbRepository)
+        changeAdStatus = ChangeAdStatus(repository = dbRepository),
+        profileUseCase = ProfileUseCase(repository = dbRepository),
+        updateUserAdCompletedCount = UpdateUserAdCompletedCount(repository = dbRepository),
+        updateUserAdCount = UpdateUserAdCount(repository = dbRepository)
     )
 }

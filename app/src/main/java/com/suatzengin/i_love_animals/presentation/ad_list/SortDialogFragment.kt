@@ -17,12 +17,12 @@ class SortDialogFragment(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogSortBinding.inflate(layoutInflater)
         var selectedItem = binding.dialogRg.checkedRadioButtonId
-        binding.dialogRg.setOnCheckedChangeListener { dialog, checkedId ->
+        binding.dialogRg.setOnCheckedChangeListener { _, checkedId ->
             selectedItem = checkedId
         }
         val builder = AlertDialog.Builder(requireActivity())
         builder.setView(binding.root)
-            .setPositiveButton("Tamam") { dialog, id ->
+            .setPositiveButton("Tamam") { _, _ ->
                 if (selectedItem == R.id.rb_descending) {
                     listener.onDialogPositiveClick(dialog = this, direction = Direction.DESCENDING)
                 } else {
@@ -30,7 +30,7 @@ class SortDialogFragment(
                 }
 
             }
-            .setNegativeButton("Iptal") { dialog, id ->
+            .setNegativeButton("Iptal") { _, _ ->
                 listener.onDialogNegativeClick(this)
             }
 

@@ -2,7 +2,8 @@ package com.suatzengin.i_love_animals.presentation.ad_detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.suatzengin.i_love_animals.domain.use_case.ad.ChangeAdStatus
+import com.google.firebase.auth.FirebaseUser
+import com.suatzengin.i_love_animals.domain.use_case.UseCases
 import com.suatzengin.i_love_animals.util.Resource
 import com.suatzengin.i_love_animals.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AdDetailViewModel @Inject constructor(
-    private val changeAdStatus: ChangeAdStatus
+    private val useCases: UseCases
 ) : ViewModel() {
 
     private val _channel = Channel<UiEvent>(Channel.BUFFERED)
@@ -24,13 +25,17 @@ class AdDetailViewModel @Inject constructor(
     private val _stateStatus = MutableStateFlow(false)
     val stateStatus: StateFlow<Boolean>
         get() = _stateStatus
+    private val currentUser: FirebaseUser?
+        get() = useCases.getUserUseCase.invoke()
 
     fun updateAdStatus(id: String, status: Boolean) {
         viewModelScope.launch {
-            when (val result = changeAdStatus(id = id, status = status)) {
+            when (val result = useCases.changeAdStatus(id = id, status = status)) {
                 is Resource.Success -> {
-                    _channel.send(UiEvent.ShowMessage(result.data ?: ""))
+                    useCases.updateUserAdCompletedCount(currentUser?.email!!)
+                    _channel.send(UiEvent.ShowMessage(result.data ?: "Error!"))
                 }
+
                 is Resource.Error -> {
                     _channel.send(UiEvent.ShowMessage(result.message ?: "Error!"))
                 }
@@ -38,7 +43,7 @@ class AdDetailViewModel @Inject constructor(
         }
     }
 
-    fun setStatus(status: Boolean){
+    fun setStatus(status: Boolean) {
         _stateStatus.value = status
     }
 }

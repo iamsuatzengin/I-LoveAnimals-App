@@ -30,17 +30,18 @@ class PostAdViewModel @Inject constructor(
     private val _channel = Channel<UiEvent>(Channel.BUFFERED)
     val eventFlow = _channel.receiveAsFlow()
 
-    fun addLocation(location: MyLocation){
+    fun addLocation(location: MyLocation) {
         _location.value = location
     }
 
-    fun postNewAd(advertisement: Advertisement){
+    fun postNewAd(advertisement: Advertisement) {
         viewModelScope.launch {
             useCases.postAdUseCase.invoke(advertisement = advertisement)
                 .collectLatest { result ->
-                    when(result){
+                    when (result) {
                         is Resource.Success -> {
                             val successMessage = result.data ?: ""
+                            useCases.updateUserAdCount(email = advertisement.authorEmail!!)
                             _channel.send(UiEvent.ShowMessage(successMessage))
                         }
                         is Resource.Error -> {

@@ -38,5 +38,10 @@
     <string name="filter">Filtre</string>
     <string name="date_descending">En yeniden eskiye</string>
     <string name="date_ascending">En eskiden yeniye</string>
+    <string name="completed_ad">Tamamlanan Duyuru</string>
+    <string name="change_my_password">Şifremi Değiştir</string>
+    <string name="ad_count">Duyuru Sayısı</string>
+    <string name="animal_icon">animal icon</string>
+    <string name="settings_icon_for_ad">settings_icon_for_ad</string>
 
 </resources>

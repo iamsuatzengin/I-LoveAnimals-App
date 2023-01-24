@@ -112,7 +112,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:text="@{ad.title}"
-                        android:textColor="@color/md_theme_light_onSurface"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/icon_status"
                         tools:text="Advertisement Title" />
@@ -125,7 +124,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:text="@{ad.description}"
-                        android:textColor="@color/md_theme_light_onSurface"
                         app:layout_constraintTop_toBottomOf="@id/tv_title_detail"
                         tools:text="DescriptionDescriptionDescriptionDescriptionDescription
             DescriptionDescriptionDescriptionDescription" />
@@ -136,8 +134,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="@string/address_label"
-                        android:textColor="@color/md_theme_light_onSurface" />
+                        android:text="@string/address_label" />
 
                     <TextView
                         android:id="@+id/tv_address_detail"
@@ -146,8 +143,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:text="@{ad.location.address}"
-                        android:textColor="@color/md_theme_light_onSurface"
-
                         tools:text="@string/address_label" />
                 </LinearLayout>
 
