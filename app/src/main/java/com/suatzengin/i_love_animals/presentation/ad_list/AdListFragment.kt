@@ -50,6 +50,7 @@ class AdListFragment : Fragment() {
                         direction: Direction
                     ) {
                         viewModel.setDirection(direction = direction)
+                        dialog.dismiss()
                     }
 
                     override fun onDialogNegativeClick(dialog: DialogFragment) {
@@ -58,7 +59,7 @@ class AdListFragment : Fragment() {
 
                 }
             )
-            dialog.show(activity?.supportFragmentManager!!, "SortDialog")
+            dialog.show(childFragmentManager, "SortDialog")
         }
     }
 
