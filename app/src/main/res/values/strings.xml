@@ -45,5 +45,8 @@
     <string name="settings_icon_for_ad">settings_icon_for_ad</string>
     <string name="btn_ok_label">Tamam</string>
     <string name="btn_cancel_label">Iptal</string>
+    <string name="apply">Uygula</string>
+    <string name="all">Hepsi</string>
+    <string name="mine">Benim Duyurular</string>
 
 </resources>

@@ -3,10 +3,15 @@ package com.suatzengin.i_love_animals.presentation.ad_list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.Query.Direction
+import com.suatzengin.i_love_animals.domain.model.Filter
 import com.suatzengin.i_love_animals.domain.use_case.UseCases
 import com.suatzengin.i_love_animals.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +30,8 @@ class AdListViewModel @Inject constructor(
     private fun getAllAd() {
         useCases.getAllAdUseCase.invoke(
             direction = _state.value.direction,
-            status = _state.value.status
+            status = _state.value.status,
+            filterByUser = _state.value.filterByUser
         )
             .onEach { result ->
                 when (result) {
@@ -60,4 +66,8 @@ class AdListViewModel @Inject constructor(
         getAllAd()
     }
 
+    fun setFilter(filter: Filter){
+        _state.update { it.copy(filterByUser = filter) }
+        getAllAd()
+    }
 }

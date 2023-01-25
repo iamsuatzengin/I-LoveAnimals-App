@@ -13,7 +13,7 @@ import com.suatzengin.i_love_animals.databinding.DialogSortBinding
 import com.suatzengin.i_love_animals.util.NoticeDialogListener
 
 class SortDialogFragment(
-    private val listener: NoticeDialogListener
+    private val listener: NoticeDialogListener<Direction>
 ) : DialogFragment() {
 
     private lateinit var binding: DialogSortBinding
@@ -37,12 +37,12 @@ class SortDialogFragment(
                 if (selectedItem == R.id.rb_descending) {
                     listener.onDialogPositiveClick(
                         dialog = this@SortDialogFragment,
-                        direction = Direction.DESCENDING
+                        query = Direction.DESCENDING
                     )
                 } else {
                     listener.onDialogPositiveClick(
                         dialog = this@SortDialogFragment,
-                        direction = Direction.ASCENDING
+                        query = Direction.ASCENDING
                     )
                 }
             }

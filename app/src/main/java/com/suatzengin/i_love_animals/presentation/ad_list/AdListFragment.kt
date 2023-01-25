@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.firebase.firestore.Query.Direction
 import com.suatzengin.i_love_animals.databinding.FragmentAdListBinding
 import com.suatzengin.i_love_animals.domain.model.Advertisement
+import com.suatzengin.i_love_animals.domain.model.Filter
 import com.suatzengin.i_love_animals.presentation.ad_list.recycler_view.AdListRecyclerAdapter
 import com.suatzengin.i_love_animals.util.ClickListener
 import com.suatzengin.i_love_animals.util.NoticeDialogListener
@@ -44,12 +45,12 @@ class AdListFragment : Fragment() {
 
         binding.filterBarLayout.btnSort.setOnClickListener {
             val dialog = SortDialogFragment(
-                listener = object : NoticeDialogListener {
+                listener = object : NoticeDialogListener<Direction> {
                     override fun onDialogPositiveClick(
                         dialog: DialogFragment,
-                        direction: Direction
+                        query: Direction
                     ) {
-                        viewModel.setDirection(direction = direction)
+                        viewModel.setDirection(direction = query)
                         dialog.dismiss()
                     }
 
@@ -60,6 +61,21 @@ class AdListFragment : Fragment() {
                 }
             )
             dialog.show(childFragmentManager, "SortDialog")
+        }
+        binding.filterBarLayout.btnFilter.setOnClickListener {
+            val sheetFragment = FilterSheetFragment(
+                listener = object : NoticeDialogListener<Filter> {
+                    override fun onDialogPositiveClick(dialog: DialogFragment, query: Filter) {
+                        viewModel.setFilter(filter = query)
+                        dialog.dismiss()
+                    }
+
+                    override fun onDialogNegativeClick(dialog: DialogFragment) {
+                        dialog.dismiss()
+                    }
+                }
+            )
+            sheetFragment.show(childFragmentManager, "FilterBottomSheet")
         }
     }
 
