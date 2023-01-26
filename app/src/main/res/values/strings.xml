@@ -12,9 +12,7 @@
     <string name="email_label">Email</string>
     <string name="sign_up_label">Kayıt Ol</string>
     <string name="or_label">VEYA</string>
-    <string name="forgot_password_label">
-        <u>Şifremi unuttum!</u>
-    </string>
+    <string name="forgot_password_label"><u>Şifremi unuttum!</u></string>
     <string name="login_label">Giriş Yap</string>
     <string name="icon_for_dog_label">Icon for Dog</string>
     <string name="have_an_account_label">Zaten bir hesabın var mı?</string>

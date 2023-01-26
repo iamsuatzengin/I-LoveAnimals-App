@@ -8,6 +8,7 @@ import com.suatzengin.i_love_animals.domain.repository.FirebaseDbRepository
 import com.suatzengin.i_love_animals.domain.use_case.UseCases
 import com.suatzengin.i_love_animals.domain.use_case.ad.ChangeAdStatus
 import com.suatzengin.i_love_animals.domain.use_case.ad.GetAllAdUseCase
+import com.suatzengin.i_love_animals.domain.use_case.ad.PasswordResetUseCase
 import com.suatzengin.i_love_animals.domain.use_case.ad.PostAdUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.GetUserUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.LoginUseCase
@@ -49,6 +50,7 @@ object FirebaseModule {
         changeAdStatus = ChangeAdStatus(repository = dbRepository),
         profileUseCase = ProfileUseCase(repository = dbRepository),
         updateUserAdCompletedCount = UpdateUserAdCompletedCount(repository = dbRepository),
-        updateUserAdCount = UpdateUserAdCount(repository = dbRepository)
+        updateUserAdCount = UpdateUserAdCount(repository = dbRepository),
+        passwordResetUseCase = PasswordResetUseCase(repository = authRepository)
     )
 }

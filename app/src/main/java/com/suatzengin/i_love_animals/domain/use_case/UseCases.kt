@@ -2,6 +2,7 @@ package com.suatzengin.i_love_animals.domain.use_case
 
 import com.suatzengin.i_love_animals.domain.use_case.ad.ChangeAdStatus
 import com.suatzengin.i_love_animals.domain.use_case.ad.GetAllAdUseCase
+import com.suatzengin.i_love_animals.domain.use_case.ad.PasswordResetUseCase
 import com.suatzengin.i_love_animals.domain.use_case.ad.PostAdUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.GetUserUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.LoginUseCase
@@ -22,5 +23,6 @@ data class UseCases @Inject constructor(
     val changeAdStatus: ChangeAdStatus,
     val profileUseCase: ProfileUseCase,
     val updateUserAdCompletedCount: UpdateUserAdCompletedCount,
-    val updateUserAdCount: UpdateUserAdCount
+    val updateUserAdCount: UpdateUserAdCount,
+    val passwordResetUseCase: PasswordResetUseCase
 )

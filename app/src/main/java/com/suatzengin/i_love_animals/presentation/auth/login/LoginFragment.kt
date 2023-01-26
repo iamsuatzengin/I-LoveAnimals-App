@@ -44,6 +44,9 @@ class LoginFragment : Fragment() {
             val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
             findNavController().navigate(action)
         }
+        binding.btnForgotPassword.setOnClickListener {
+            viewModel.sendPasswordResetEmail(email.toString())
+        }
         observeLogin()
     }
 
@@ -57,6 +60,9 @@ class LoginFragment : Fragment() {
                             startActivity(intent)
                             activity?.finish()
                         }
+                        is UiEvent.ShowMessage -> {
+                            Snackbar.make(requireView(), event.message, Snackbar.LENGTH_LONG).show()
+                        }
                     }
                 }
             }
@@ -69,7 +75,6 @@ class LoginFragment : Fragment() {
                         Snackbar.make(requireView(), state.message, Snackbar.LENGTH_LONG).show()
                     }
                 }
-
             }
         }
     }

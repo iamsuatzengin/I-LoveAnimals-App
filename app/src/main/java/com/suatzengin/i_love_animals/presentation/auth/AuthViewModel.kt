@@ -9,7 +9,11 @@ import com.suatzengin.i_love_animals.util.Resource
 import com.suatzengin.i_love_animals.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -47,18 +51,11 @@ class AuthViewModel @Inject constructor(
                 .collectLatest { result ->
                     when (result) {
                         is Resource.Success -> {
-                            _stateLogin.update {
-                                it.copy(isLoading = false, message = result.message ?: "Login")
-                            }
                             _eventChannel.send(UiEvent.NavigateToHome)
                         }
                         is Resource.Error -> {
-                            _stateLogin.update {
-                                it.copy(
-                                    isLoading = false,
-                                    message = result.message ?: "Login failed!"
-                                )
-                            }
+                            _eventChannel.send(UiEvent.ShowMessage(result.message ?: "Başarısız"))
+                            _stateLogin.update { it.copy(isLoading = false) }
                         }
                     }
                 }
@@ -74,18 +71,24 @@ class AuthViewModel @Inject constructor(
                         is Resource.Success -> {
                             _eventChannel.send(UiEvent.NavigateToLogin)
                         }
+
                         is Resource.Error -> {
-                            _stateRegister.update {
-                                it.copy(isLoading = false)
-                            }
                             _eventChannel.send(
                                 UiEvent.ShowMessage(
                                     result.message ?: "Register Failed!"
                                 )
                             )
+                            _stateRegister.update { it.copy(isLoading = false) }
                         }
                     }
                 }
+        }
+    }
+
+    fun sendPasswordResetEmail(email: String) {
+        viewModelScope.launch {
+            val result = useCases.passwordResetUseCase(email = email)
+            _eventChannel.send(UiEvent.ShowMessage(message = result))
         }
     }
 }
