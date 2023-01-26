@@ -8,12 +8,13 @@ import com.suatzengin.i_love_animals.domain.repository.FirebaseDbRepository
 import com.suatzengin.i_love_animals.domain.use_case.UseCases
 import com.suatzengin.i_love_animals.domain.use_case.ad.ChangeAdStatus
 import com.suatzengin.i_love_animals.domain.use_case.ad.GetAllAdUseCase
-import com.suatzengin.i_love_animals.domain.use_case.ad.PasswordResetUseCase
+import com.suatzengin.i_love_animals.domain.use_case.auth.PasswordResetUseCase
 import com.suatzengin.i_love_animals.domain.use_case.ad.PostAdUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.GetUserUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.LoginUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.RegisterUseCase
 import com.suatzengin.i_love_animals.domain.use_case.auth.SignOutUseCase
+import com.suatzengin.i_love_animals.domain.use_case.user.ChangePasswordUseCase
 import com.suatzengin.i_love_animals.domain.use_case.user.ProfileUseCase
 import com.suatzengin.i_love_animals.domain.use_case.user.UpdateUserAdCompletedCount
 import com.suatzengin.i_love_animals.domain.use_case.user.UpdateUserAdCount
@@ -51,6 +52,7 @@ object FirebaseModule {
         profileUseCase = ProfileUseCase(repository = dbRepository),
         updateUserAdCompletedCount = UpdateUserAdCompletedCount(repository = dbRepository),
         updateUserAdCount = UpdateUserAdCount(repository = dbRepository),
-        passwordResetUseCase = PasswordResetUseCase(repository = authRepository)
+        passwordResetUseCase = PasswordResetUseCase(repository = authRepository),
+        changePasswordUseCase = ChangePasswordUseCase(repository = authRepository)
     )
 }

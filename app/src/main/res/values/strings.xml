@@ -46,5 +46,7 @@
     <string name="apply">Uygula</string>
     <string name="all">Hepsi</string>
     <string name="mine">Benim Duyurular</string>
+    <string name="change_password">Şifreyi Değiştir</string>
+    <string name="title_change_password">Şifre Değişikliği</string>
 
 </resources>

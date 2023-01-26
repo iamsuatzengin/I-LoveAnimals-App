@@ -1,4 +1,4 @@
-package com.suatzengin.i_love_animals.domain.use_case.ad
+package com.suatzengin.i_love_animals.domain.use_case.auth
 
 import com.suatzengin.i_love_animals.domain.repository.FirebaseAuthRepository
 import javax.inject.Inject

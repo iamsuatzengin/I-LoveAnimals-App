@@ -1,5 +1,6 @@
 package com.suatzengin.i_love_animals.data.repository
 
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
@@ -54,6 +55,18 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
             "Mail Gönderildi"
         } catch (e: Exception) {
             "E-mail yanlış olabilir!"
+        }
+    }
+
+    override suspend fun changePassword(newPassword: String): String {
+        return try {
+            val user = auth.currentUser
+            user!!.updatePassword(newPassword).await()
+            val credential = EmailAuthProvider.getCredential(user.email!!,newPassword)
+            user.reauthenticate(credential).await()
+            "Başarılı şekilde değiştirildi!"
+        }catch (e: Exception){
+            "Bir hata oluştu"
         }
     }
 }

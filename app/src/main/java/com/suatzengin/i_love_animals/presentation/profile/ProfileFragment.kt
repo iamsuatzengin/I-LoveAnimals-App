@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.suatzengin.i_love_animals.databinding.FragmentProfileBinding
 import com.suatzengin.i_love_animals.presentation.IntroActivity
 import com.suatzengin.i_love_animals.util.UiEvent
@@ -36,7 +37,10 @@ class ProfileFragment : Fragment() {
             viewModel.logOut()
         }
 
-
+        binding.btnToChangePassword.setOnClickListener {
+            val action = ProfileFragmentDirections.actionProfileFragmentToChangePasswordFragment()
+            findNavController().navigate(action)
+        }
         observeFlows {
             viewModel.state.collectLatest { state ->
                 with(binding) {
@@ -55,6 +59,7 @@ class ProfileFragment : Fragment() {
                         Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT)
                             .show()
                     }
+
                     is UiEvent.LogOut -> {
                         val intent = Intent(requireContext(), IntroActivity::class.java)
                         startActivity(intent)

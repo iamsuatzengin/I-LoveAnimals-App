@@ -115,7 +115,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <Button
-        android:id="@+id/btn_change_password"
+        android:id="@+id/btn_to_change_password"
         style="@style/Widget.Material3.Button.TextButton"
         android:gravity="start|center"
         android:layout_width="match_parent"
@@ -133,7 +133,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/log_out"
-        app:layout_constraintTop_toBottomOf="@id/btn_change_password"
+        app:layout_constraintTop_toBottomOf="@id/btn_to_change_password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
