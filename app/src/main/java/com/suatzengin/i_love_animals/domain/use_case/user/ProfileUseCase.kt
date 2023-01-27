@@ -12,7 +12,6 @@ class ProfileUseCase @Inject constructor(
     operator fun invoke(email: String) = flow {
         try {
             val user = repository.getUser(email = email)
-            println("user: ${user}")
             emit(Resource.Success(data = user))
         }catch (e: Exception){
             emit(Resource.Error(message = e.localizedMessage ?: "Error" ))

@@ -53,7 +53,7 @@ class PostAdSheetFragment(val myLocation: MyLocation?) : BottomSheetDialogFragme
             val advertisement = Advertisement(
                 title = title.toString(),
                 description = description.toString(),
-                location = myLocation!!,
+                location = myLocation,
                 status = false,
                 authorPhoneNumber = phoneNumber.toString(),
                 authorEmail = auth.currentUser!!.email.toString(),
@@ -95,6 +95,7 @@ class PostAdSheetFragment(val myLocation: MyLocation?) : BottomSheetDialogFragme
             textFieldDescription.editText?.setText("")
             textFieldNumber.editText?.setText("")
         }
+
     }
 
     private fun observe(){

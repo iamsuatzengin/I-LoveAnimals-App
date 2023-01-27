@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
                     binding.postAd.visibility = View.INVISIBLE
                 }
 
-                R.id.adListFragment -> {
+                R.id.adListFragment, R.id.profileFragment -> {
                     binding.bottomAppBar.visibility = View.VISIBLE
                     binding.postAd.visibility = View.VISIBLE
                 }

@@ -9,12 +9,20 @@ import javax.inject.Inject
 class PostAdUseCase @Inject constructor(
     private val repository: FirebaseDbRepository
 ) {
-    operator fun invoke(advertisement: Advertisement) = flow{
+    operator fun invoke(advertisement: Advertisement) = flow {
         emit(Resource.Loading())
         try {
+            if (
+                advertisement.title.isNullOrEmpty() ||
+                advertisement.description.isNullOrEmpty() ||
+                advertisement.location == null
+            ) {
+                emit(Resource.Error(message = "Gerekli alanlar boş kalmamalı!"))
+                return@flow
+            }
             repository.postNewAd(advertisement)
             emit(Resource.Success(data = "Başarılı"))
-        }catch (e: Exception){
+        } catch (e: Exception) {
             emit(Resource.Error(message = e.localizedMessage ?: "Error"))
         }
     }

@@ -86,7 +86,6 @@ class FirebaseDbRepositoryImpl @Inject constructor(
     override suspend fun getUser(email: String): User? {
         val docRef = firestore.collection(USER).document(email)
         val getDoc = docRef.get().await()
-        println("user from repo : ${getDoc.toObject<User>()}")
         return getDoc.toObject<User>()
     }
 
